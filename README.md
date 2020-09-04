@@ -6,6 +6,9 @@ You'll need to have a .env file created with all your necessary discord bot info
 The bot has 4 commands:
 
 ,r <user>  will challenge someone to a game.
+  
 ,accept    will accept the challenge.
+
 ,cancel    will cancel the challenge (anyone can cancel a match in case one gets left up)
+
 ,help      will spit out basic functionality.
