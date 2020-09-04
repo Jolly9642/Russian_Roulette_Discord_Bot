@@ -116,12 +116,12 @@ async def on_message(message):
                 else:
                     playerIndex += 1
 
-    elif re.search('^,accept', message.content) and challengeCheck == 0:
+    elif re.search('^,accept', message.content) and challengeCheck == 0:    #Checks for active challenge
         await message.channel.send("There are no challenges at this time...")
-    elif re.search('^,cancel', message.content):
+    elif re.search('^,cancel', message.content):                            #Cancels the challenge
         await message.channel.send(f"{user1} has cancelled the challenge")
         challengeCheck = 0
-    elif re.search('^,help', message.content) or re.search('^,', message.content):
+    elif re.search('^,help', message.content) or re.search('^,', message.content):  #The help request
         await message.channel.send("Challenge someone with ,r or accept a challenge with ,accept")
 
 
