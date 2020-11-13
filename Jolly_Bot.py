@@ -66,6 +66,11 @@ async def on_message(message):
             await message.channel.send("That user isn't on the server!")
 
     elif re.search('^,accept', message.content) and challengeCheck == 1:
+        
+        if user2 != message.author.display_name:
+            await message.channel.send("Wait your turn ya turkey!")
+            return
+        
         bullet = 1
         players = ["none"] * 2
         playerIndex = 1
