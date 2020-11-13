@@ -12,3 +12,7 @@ The bot has 4 commands:
 ,cancel    will cancel the challenge (anyone can cancel a match in case one gets left up)
 
 ,help      will spit out basic functionality.
+
+UPDATE:
+
+I added intents so it works again. I also simplified the way it iterates through users on a server! Enjoy!
