@@ -9,27 +9,21 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
+intents = discord.Intents.all()
+intents.members = True
+client = discord.Client(intents=intents)
 user1 = "none"
 user2 = "none"
 challengeCheck = 0
 memCheck = 0
-member_list = []
 
-client = discord.Client()
-
-@client.event
-async def on_ready():
-    guild = discord.utils.get(client.guilds, name=GUILD)
-    print(
-        f'{client.user} is connected to the following guild:\n'
-        f'{guild.name}(id: {guild.id})'
-    )
-    GuildPop(guild)
 
 class CustomClient(discord.Client):
     async def on_ready(self):
         print(f'{self.user} has connected to Discord!')
-client = CustomClient()
+    client = discord.Client(intents=intents)
+
+
 
 @client.event            #Welcoming message for new users joining the server
 async def on_member_join(member):
@@ -38,25 +32,15 @@ async def on_member_join(member):
         f'Hi {member.name}, welcome to my Discord server!'
     )
 
-def GuildPop(input): #Make a list of users in the server to check if someone is available.
-    for member in input.guild.members:
-        global member_list
-        if any(member.name in s for s in member_list):
-            return
-        else:
-            member_list.append(member.name)
+
+
 
 @client.event #message event
 async def on_message(message):
     global user1
     global user2
     global challengeCheck
-    global member_list
     global memCheck
-
-    if memCheck == 0:
-        GuildPop(message)
-        memCheck = 1
 
     if message.author == client.user:
         return
@@ -67,16 +51,19 @@ async def on_message(message):
 
         user1 = message.author.name
         user2 = message.content.split(" ", 1)[1]
+        print ("user 1: " + user1 + " user 2: " + user2)
         if user1 == user2:                      # This is to make sure you can't play against yourself
             await message.channel.send("Oh no you don't go spill your brains some place else...")
             return
-        if any(user2 in s for s in member_list): # This is a valid challenge
-            response = f"{user1} has challenged {user2} to a game of russian roulette! Will {user2} step up to {user1} bravado?!?!"
-            await message.channel.send(response)
-            challengeCheck = 1
+        for member in message.guild.members:
+            print(member.display_name)
+            if user2 == member.display_name:
+                response = f"{user1} has challenged {user2} to a game of russian roulette! Will {user2} step up to {user1} bravado?!?!"
+                await message.channel.send(response)
+                challengeCheck = 1
+                return
         else:                                    # This catches if a user does not exist
             await message.channel.send("That user isn't on the server!")
-            GuildPop(message)
 
     elif re.search('^,accept', message.content) and challengeCheck == 1:
         bullet = 1
